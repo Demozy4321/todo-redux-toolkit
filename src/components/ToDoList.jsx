@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, removeTask } from "../redux/reducers/todoSlice";
+import { addTask, removeTask } from "../redux/slices/todoSlice";
 
 function ToDoList() {
   const tasks = useSelector((state) => state.todo.tasks);
@@ -12,8 +12,6 @@ function ToDoList() {
       dispatch(addTask({ text: taskText }));
       setTaskText("");
     }
-
-    // console.log(taskText);
   };
 
   const handleRemoveTask = (taskText) => {
@@ -24,17 +22,6 @@ function ToDoList() {
     <div>
       <h2>TODO LIST</h2>
 
-      <ul>
-        {tasks.map((task) => {
-          <li>
-            {task.text}
-            <button onClick={dispatch(handleRemoveTask(task.text))}>
-              Remove
-            </button>
-          </li>;
-        })}
-      </ul>
-
       <input
         type="text"
         value={taskText}
@@ -42,6 +29,19 @@ function ToDoList() {
         placeholder="Enter Task"
       />
       <button onClick={handleAddTask}>Add Task</button>
+
+      <ol>
+        {tasks.map((task, index) => {
+          return (
+            <li key={index}>
+              {task.text}
+              <button onClick={() => handleRemoveTask(task.text)}>
+                Remove
+              </button>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
